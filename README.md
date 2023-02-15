@@ -6,7 +6,7 @@ The purpose of `vite-plugin-ssam-git` is to help [Ssam](https://github.com/cdaei
 
 When `ssam:git` message is sent to the plugin from a client, the plugin commits to the Git and sends back `ssam:git-success` message to the client with the commit hash. Ssam then uses this info to export an image with the hash. The plugin sends `ssam:log` message when git commit is successful, and it sends `ssam:warn` for errors.
 
-## Example usage
+## How to use
 
 In your code:
 
@@ -36,6 +36,41 @@ if (import.meta.hot) {
     console.warn(data.msg);
   });
 }
+```
+
+## Example
+
+If you want to use this plugin in your own setup, here is a bare minimum example:
+
+```js
+const canvas = document.createElement("canvas");
+canvas.width = canvas.height = 200;
+document.body.appendChild(canvas);
+const ctx = canvas.getContext("2d")!;
+
+ctx.fillStyle = `gray`;
+ctx.fillRect(0, 0, 200, 200);
+
+window.addEventListener("keydown", (ev) => {
+  if (ev.key === "k") {
+    if (import.meta.hot) {
+      import.meta.hot.send("ssam:git", {
+        commitMessage: "my commit",
+      });
+    }
+  }
+});
+
+if (import.meta.hot) {
+  import.meta.hot.on("ssam:git-success", (data) =>
+    // do something with hash
+    console.log(`commit hash:${data.hash}`)
+  );
+  import.meta.hot.on("ssam:log", (data) => console.log(data.msg));
+  import.meta.hot.on("ssam:warn", (data) => console.warn(data.msg));
+}
+
+export {};
 ```
 
 ## License
