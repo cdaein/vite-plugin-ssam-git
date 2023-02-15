@@ -2,6 +2,12 @@
 
 The purpose of `vite-plugin-ssam-git` is to help [Ssam](https://github.com/cdaein/ssam) canvas wrapper and helper create a code and image snapshot at the same time when working on creative coding sketches. Having both snapshots makes it easy to archive and retrieve the work from a particular moment. It may also be used more generally by leveraging the server-client communication.
 
+## Install
+
+```sh
+npm i -D vite-plugin-ssam-git
+```
+
 ## How it works
 
 When `ssam:git` message is sent to the plugin from a client, the plugin commits to the Git and sends back `ssam:git-success` message to the client with the commit hash. Ssam then uses this info to export an image with the hash. The plugin sends `ssam:log` message when git commit is successful, and it sends `ssam:warn` for errors.
