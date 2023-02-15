@@ -1,8 +1,9 @@
 {
   "name": "vite-plugin-ssam-git",
   "version": "0.0.1",
-  "description": "",
-  "main": "./dist/index.mjs",
+  "description": "Create a Git commit through Vite dev server",
+  "main": "./dist/index.js",
+  "type": "module",
   "scripts": {
     "build": "tsc --noemit && tsup"
   },
@@ -16,12 +17,16 @@
   "dependencies": {
     "kleur": "^4.1.5"
   },
+  "author": "Daeinc",
+  "license": "MIT",
+  "keywords": [
+    "ssam",
+    "vite-plugin"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cdaein/vite-plugin-ssam-git.git"
   },
-  "author": "Daeinc",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/cdaein/vite-plugin-ssam-git/issues"
   },
