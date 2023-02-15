@@ -8,6 +8,8 @@ When `ssam:git` message is sent to the plugin from a client, the plugin commits 
 
 ## How to use
 
+> If you're using Ssam with `npm create ssam`, this plugin is already set up for you. No need to do anything below.
+
 In your code:
 
 ```js
@@ -38,15 +40,29 @@ if (import.meta.hot) {
 }
 ```
 
-## Example
+## Minimum Example
 
-If you're using Ssam with `npm create ssam`, this plugin is already set up. If you want to use this plugin in your own setup, here is a bare minimum example:
+If you want to use this plugin in your own setup, here is a bare minimum example:
+
+In `vite.config.js`:
+
+```js
+import { defineConfig } from "vite";
+import { ssamGit } from "vite-plugin-ssam-git";
+
+export default defineConfig({
+  plugins: [ssamGit()],
+  // ..
+});
+```
+
+In your module code:
 
 ```js
 const canvas = document.createElement("canvas");
 canvas.width = canvas.height = 200;
 document.body.appendChild(canvas);
-const ctx = canvas.getContext("2d")!;
+const ctx = canvas.getContext("2d");
 
 ctx.fillStyle = `gray`;
 ctx.fillRect(0, 0, 200, 200);
