@@ -44,7 +44,7 @@ export const ssamGit = () => ({
         .then(() => {
           // 2. add all changes and commit
           // REVIEW: can commit message contain its own hash?
-          // TODO: also, what if data.commitMessage is not available? provide a fallback (current data/time)
+          // TODO: also, what if data.commitMessage is not available? provide a fallback (current date/time)
           return execPromise(
             `git add . && git commit -am ${data.commitMessage}`
           );
