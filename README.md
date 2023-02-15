@@ -81,6 +81,8 @@ if (import.meta.hot) {
   import.meta.hot.on("ssam:git-success", (data) =>
     // do something with hash
     console.log(`commit hash:${data.hash}`)
+    // if you have some function to save a canvas...
+    saveCanvas(canvas, { filename: `${data.hash}.png` })
   );
   import.meta.hot.on("ssam:log", (data) => console.log(data.msg));
   import.meta.hot.on("ssam:warn", (data) => console.warn(data.msg));
