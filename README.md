@@ -40,7 +40,7 @@ if (import.meta.hot) {
 
 ## Example
 
-If you want to use this plugin in your own setup, here is a bare minimum example:
+If you're using Ssam with `npm create ssam`, this plugin is already set up. If you want to use this plugin in your own setup, here is a bare minimum example:
 
 ```js
 const canvas = document.createElement("canvas");
