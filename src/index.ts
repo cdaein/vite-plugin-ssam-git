@@ -42,11 +42,12 @@ export const ssamGit = () => ({
       // 1. check if "git init"ed
       execPromise(`git status --porcelain`)
         .then(() => {
-          // REVIEW: can commit message contain its own hash?
           // 2. add all changes and commit
-          // TODO: filename => commitMessage
-          // TODO: also, if data.commitMessage is not available?
-          return execPromise(`git add . && git commit -am ${data.filename}`);
+          // REVIEW: can commit message contain its own hash?
+          // TODO: also, what if data.commitMessage is not available? provide a fallback (current data/time)
+          return execPromise(
+            `git add . && git commit -am ${data.commitMessage}`
+          );
         })
         .then((value) => {
           {
