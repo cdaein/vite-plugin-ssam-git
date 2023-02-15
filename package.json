@@ -1,0 +1,29 @@
+{
+  "name": "vite-plugin-ssam-git",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./dist/index.mjs",
+  "scripts": {
+    "build": "tsc --noemit && tsup"
+  },
+  "devDependencies": {
+    "@types/node": "^18.13.0",
+    "ssam": "^0.4.2",
+    "tsup": "^6.6.3",
+    "typescript": "^4.9.5",
+    "vite": "^4.1.1"
+  },
+  "dependencies": {
+    "kleur": "^4.1.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cdaein/vite-plugin-ssam-git.git"
+  },
+  "author": "Daeinc",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cdaein/vite-plugin-ssam-git/issues"
+  },
+  "homepage": "https://github.com/cdaein/vite-plugin-ssam-git#readme"
+}
