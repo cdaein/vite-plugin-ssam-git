@@ -2,6 +2,8 @@
 
 The purpose of `vite-plugin-ssam-git` is to help [Ssam](https://github.com/cdaein/ssam) canvas wrapper and helper create a code and image snapshot at the same time when working on creative coding sketches. Having both snapshots makes it easy to archive and retrieve the work from a particular moment. It may also be used more generally by leveraging the server-client communication.
 
+> ⚠️ This module is early in its development. Expect breaking changes to come.
+
 ## Install
 
 ```sh
@@ -95,6 +97,15 @@ if (import.meta.hot) {
 }
 
 export {};
+```
+
+## Default Options
+
+```js
+ssamGit({
+  // console logging in browser
+  log: true,
+});
 ```
 
 ## License

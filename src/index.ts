@@ -17,6 +17,15 @@
 import { ViteDevServer } from "vite";
 import { exec } from "child_process";
 import kleur from "kleur";
+import ansiRegex from "ansi-regex";
+
+type Options = {
+  log?: boolean;
+};
+
+const defaultOptions = {
+  log: true,
+};
 
 const { gray, green, yellow } = kleur;
 
@@ -31,14 +40,20 @@ const execPromise = (cmd: string) => {
   });
 };
 
-export const ssamGit = () => ({
+const prefix = () => {
+  return `${gray(new Date().toLocaleTimeString())} ${green(`[ssam-git]`)}`;
+};
+
+const removeAnsiEscapeCodes = (str: string) => {
+  return str.replace(ansiRegex(), "");
+};
+
+export const ssamGit = (opts?: Options) => ({
   name: "ssam-git",
   configureServer(server: ViteDevServer) {
-    server.ws.on("ssam:git", (data, client) => {
-      const prefix = `${gray(new Date().toLocaleTimeString())} ${green(
-        `[ssam]`
-      )}`;
+    const log = opts?.log || defaultOptions.log;
 
+    server.ws.on("ssam:git", (data, client) => {
       // 1. check if "git init"ed
       execPromise(`git status --porcelain`)
         .then(() => {
@@ -52,9 +67,9 @@ export const ssamGit = () => ({
         .then((value) => {
           {
             // 3. log git commit message
-            const msg = `${prefix} ${value}`;
-            client.send("ssam:log", { msg });
-            console.log(`${prefix} ${value}`);
+            const msg = `${prefix()} ${value}`;
+            log && client.send("ssam:log", { msg: removeAnsiEscapeCodes(msg) });
+            console.log(`${prefix()} ${value}`);
           }
 
           return execPromise(`git rev-parse --short HEAD`);
@@ -72,13 +87,15 @@ export const ssamGit = () => ({
           if (!err) {
             // err is empty so create a custom one
             // REVIEW: empty check is enough? or look at "git diff" length?
-            const msg = `${prefix} nothing to commit, working tree clean`;
-            client.send("ssam:warn", { msg });
+            const msg = `${prefix()} nothing to commit, working tree clean`;
+            log &&
+              client.send("ssam:warn", { msg: removeAnsiEscapeCodes(msg) });
             console.warn(`${msg}`);
           } else {
-            const msg = `${prefix} ${err}`;
-            client.send("ssam:warn", { msg });
-            console.error(`${prefix} ${yellow(`${err}`)}`);
+            const msg = `${prefix()} ${err}`;
+            log &&
+              client.send("ssam:warn", { msg: removeAnsiEscapeCodes(msg) });
+            console.error(`${prefix()} ${yellow(`${err}`)}`);
           }
         });
     });
