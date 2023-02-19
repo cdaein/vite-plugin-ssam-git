@@ -12,6 +12,8 @@ npm i -D vite-plugin-ssam-git
 
 ## How it works
 
+When the plugin is run, it first checks whether `git` is available on the machine and then checks for whether the project directory is already a git repo or not. If it's not, it will run `git init` to create a new one.
+
 When `ssam:git` message is sent to the plugin from a client, the plugin commits to the Git and sends back `ssam:git-success` message to the client with the commit hash. Ssam then uses this info to export an image with the hash. The plugin sends `ssam:log` message when git commit is successful, and it sends `ssam:warn` for errors.
 
 ## How to use

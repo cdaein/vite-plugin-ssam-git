@@ -14,12 +14,14 @@
  *   - if commit success, exportFrame and log message
  */
 
-import { ViteDevServer } from "vite";
-import { exec } from "child_process";
+import type { PluginOption, ViteDevServer } from "vite";
+import { exec } from "node:child_process";
+import fs from "node:fs";
 import kleur from "kleur";
 import ansiRegex from "ansi-regex";
 
 type Options = {
+  /** console logging in browser */
   log?: boolean;
 };
 
@@ -48,10 +50,29 @@ const removeAnsiEscapeCodes = (str: string) => {
   return str.replace(ansiRegex(), "");
 };
 
-export const ssamGit = (opts?: Options) => ({
-  name: "ssam-git",
+export const ssamGit = (opts: Options = {}): PluginOption => ({
+  name: "vite-plugin-ssam-git",
+  apply: "serve", // works only in development
   configureServer(server: ViteDevServer) {
-    const log = opts?.log || defaultOptions.log;
+    const { log } = Object.assign(defaultOptions, opts);
+
+    // check if git is available on client machine
+    execPromise(`git --version`)
+      .catch((err) => {
+        const msg = `${prefix()} git is not found: \n${yellow(`${err}`)}`;
+        server.ws.send("ssam:warn", { msg: removeAnsiEscapeCodes(msg) });
+        console.error(msg);
+      })
+      .then(() => {
+        // if git is not initialized, initialize
+        if (!fs.existsSync("./.git")) {
+          execPromise(`git init`).then(() => {
+            const msg = `${prefix()} git is initialized`;
+            server.ws.send("ssam:log", { msg: removeAnsiEscapeCodes(msg) });
+            console.log(msg);
+          });
+        }
+      });
 
     server.ws.on("ssam:git", (data, client) => {
       // 1. check if "git init"ed
