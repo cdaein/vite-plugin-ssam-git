@@ -36,10 +36,19 @@ const execPromise = (cmd: string) => {
     exec(cmd, (err, stdout, stderr) => {
       if (err) {
         reject(stderr);
+        return;
       }
       resolve(stdout);
     });
   });
+};
+
+export const formatDatetime = (date: Date) => {
+  const isoString = date.toISOString();
+  const [, yyyy, mo, dd, hh, mm, ss] = isoString.match(
+    /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/
+  )!;
+  return `${yyyy}.${mo}.${dd}-${hh}.${mm}.${ss}`;
 };
 
 const prefix = () => {
@@ -81,16 +90,18 @@ export const ssamGit = (opts: Options = {}): PluginOption => ({
           // 2. add all changes and commit
           // REVIEW: can commit message contain its own hash?
           // TODO: also, what if data.commitMessage is not available? provide a fallback (current date/time)
-          return execPromise(
-            `git add . && git commit -am "${data.commitMessage}"`
-          );
+          return execPromise(`git add .`);
         })
-        .then((value) => {
+        .then(() => {
+          // do not use unsanitized user input
+          return execPromise(`git commit -am "${formatDatetime(new Date())}"`);
+        })
+        .then((result) => {
           {
             // 3. log git commit message
-            const msg = `${prefix()} ${value}`;
+            const msg = `${prefix()} ${result}`;
             log && client.send("ssam:log", { msg: removeAnsiEscapeCodes(msg) });
-            console.log(`${prefix()} ${value}`);
+            console.log(`${prefix()} ${result}`);
           }
 
           return execPromise(`git rev-parse --short HEAD`);
