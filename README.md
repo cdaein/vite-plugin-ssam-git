@@ -26,7 +26,6 @@ In your code:
 // attach it to a keyboard listener or button, etc.
 if (import.meta.hot) {
   import.meta.hot.send("ssam:git", {
-    commitMessage: "some message",
     // you can include extra data
     id: 1234,
   });
@@ -80,9 +79,7 @@ ctx.fillRect(0, 0, 200, 200);
 window.addEventListener("keydown", (ev) => {
   if (ev.key === "k") {
     if (import.meta.hot) {
-      import.meta.hot.send("ssam:git", {
-        commitMessage: "my commit",
-      });
+      import.meta.hot.send("ssam:git");
     }
   }
 });

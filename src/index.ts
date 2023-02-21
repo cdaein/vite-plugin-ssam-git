@@ -12,6 +12,11 @@
  *   - send back success message and { canvasId, hash } to ssam
  * - ssam:
  *   - if commit success, exportFrame and log message
+ *
+ * REVIEW:
+ * - using unsanitized user input in shell command is dangerous
+ *   => removed getting commitMessage from user side.
+ *   - find an alternative - 'execFile()', sanitize/escape first
  */
 
 import type { PluginOption, ViteDevServer } from "vite";
