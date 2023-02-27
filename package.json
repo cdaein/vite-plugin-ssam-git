@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-ssam-git",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Create a Git commit through Vite dev server",
   "types": "./dist/index.d.ts",
   "main": "./dist/index.js",
