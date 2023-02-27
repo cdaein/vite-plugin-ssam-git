@@ -48,7 +48,14 @@ const execPromise = (cmd: string) => {
   });
 };
 
+/**
+ * get current local datetime
+ * @param date
+ * @returns formatted string ex. "2022.12.29-14.22.34"
+ */
 export const formatDatetime = (date: Date) => {
+  const offset = date.getTimezoneOffset();
+  date.setMinutes(date.getMinutes() - offset);
   const isoString = date.toISOString();
   const [, yyyy, mo, dd, hh, mm, ss] = isoString.match(
     /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/
