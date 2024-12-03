@@ -26,12 +26,22 @@ import kleur from "kleur";
 import ansiRegex from "ansi-regex";
 
 type Options = {
-  /** console logging in browser */
+  /**
+   * console logging in browser
+   * @default true
+   */
   log?: boolean;
+  /**
+   * Specify where to initialize and track Git.
+   * Can be useful if sketch is part of a larger project. (ie. frontend + backend)
+   * @default "./"
+   */
+  // projectPath?: string;
 };
 
 const defaultOptions = {
   log: true,
+  // projectPath: "./",
 };
 
 const { gray, green, yellow } = kleur;
@@ -58,7 +68,7 @@ export const formatDatetime = (date: Date) => {
   date.setMinutes(date.getMinutes() - offset);
   const isoString = date.toISOString();
   const [, yyyy, mo, dd, hh, mm, ss] = isoString.match(
-    /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/
+    /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/,
   )!;
   return `${yyyy}.${mo}.${dd}-${hh}.${mm}.${ss}`;
 };
