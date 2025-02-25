@@ -22,8 +22,8 @@
 import type { PluginOption, ViteDevServer } from "vite";
 import { exec } from "node:child_process";
 import fs from "node:fs";
-import kleur from "kleur";
 import ansiRegex from "ansi-regex";
+import { color } from "./utils";
 
 type Options = {
   /**
@@ -43,8 +43,6 @@ const defaultOptions = {
   log: true,
   // projectPath: "./",
 };
-
-const { gray, green, yellow } = kleur;
 
 const execPromise = (cmd: string) => {
   return new Promise((resolve, reject) => {
@@ -74,7 +72,7 @@ export const formatDatetime = (date: Date) => {
 };
 
 const prefix = () => {
-  return `${gray(new Date().toLocaleTimeString())} ${green(`[ssam-git]`)}`;
+  return `${color(new Date().toLocaleTimeString(), "gray")} ${color(`[ssam-git]`, "green")}`;
 };
 
 const removeAnsiEscapeCodes = (str: string) => {
@@ -90,7 +88,7 @@ export const ssamGit = (opts: Options = {}): PluginOption => ({
     // check if git is available on client machine
     execPromise(`git --version`)
       .catch((err) => {
-        const msg = `${prefix()} git is not found: \n${yellow(`${err}`)}`;
+        const msg = `${prefix()} git is not found: \n${color(`${err}`, "yellow")}`;
         server.ws.send("ssam:warn", { msg: removeAnsiEscapeCodes(msg) });
         console.error(msg);
       })
@@ -149,7 +147,7 @@ export const ssamGit = (opts: Options = {}): PluginOption => ({
             const msg = `${prefix()} ${err}`;
             log &&
               client.send("ssam:warn", { msg: removeAnsiEscapeCodes(msg) });
-            console.error(`${prefix()} ${yellow(`${err}`)}`);
+            console.error(`${prefix()} ${color(`${err}`, "yellow")}`);
           }
         });
     });
